@@ -1,0 +1,25 @@
+name: Push Image to Aliyun
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-to-aliyun:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Pull image from GHCR
+        run: docker pull ghcr.io/open-webui/open-webui:main
+
+      - name: Log in to Aliyun Container Registry
+        run: docker login --username=${{ secrets.ALIYUN_USERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.ALIYUN_PASSWORD }}
+
+      - name: Tag the image
+        run: docker tag ghcr.io/open-webui/open-webui:main registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_REPO }}/open-webui:latest
+
+      - name: Push the image to Aliyun
+        run: docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_REPO }}/open-webui:latest
