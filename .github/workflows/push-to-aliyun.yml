@@ -3,7 +3,7 @@ name: Push Image to Aliyun
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   push-to-aliyun:
